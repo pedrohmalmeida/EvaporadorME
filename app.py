@@ -778,7 +778,7 @@ if __name__ == "__main__":
         etapas = ['1- Introducao','2- Identificação do Evaporador','3- Coleta de dados','4- Cálculo de Frações','5- Cálculo de Temperatura']
         st.session_state.etapa = st.selectbox('Selecione a etapa do cálculo e use o botão abaixo',etapas)
         st.button(f'Avançar para etapa: {st.session_state.etapa}')
-        image_path = f'C:/Users/pedro/Desktop/Projetos/TCC/img_diagrama/Mapa_app(0).png'
+        image_path = f'img_diagrama/Mapa_app(0).png'
         image = Image.open(image_path)
         st.image(image, use_container_width =True)
 
@@ -869,7 +869,7 @@ if __name__ == "__main__":
     """)
         st.divider()
         st.subheader('Sequência de Páginas')
-        image = Image.open(f'C:/Users/pedro/Desktop/Projetos/TCC/img_diagrama/Guia_paginas.png')
+        image = Image.open(f'img_diagrama/Guia_paginas.png')
         st.image(image)
         if st.button('Retornar'):
             st.session_state.modo = 'Apresentacao'
@@ -882,7 +882,7 @@ if __name__ == "__main__":
         elif st.session_state.etapa == 'Vazao': number = '4'
         elif st.session_state.etapa == 'Economia': number = '5'
         else: number = '3'
-        image_path = f'C:/Users/pedro/Desktop/Projetos/TCC/img_diagrama/Guia_paginas{number}.png'
+        image_path = f'img_diagrama/Guia_paginas{number}.png'
 
         image = Image.open(image_path)
         st.image(image)
@@ -896,7 +896,7 @@ if __name__ == "__main__":
             st.write('### Características do Evaporador:')
             st.write(f'Verifique se todos os dados necessários para o cálculo estão disponíveis :green[(**verde**)]:')
             effect_number = st.session_state.n_efeitos
-            image = Image.open(f'C:/Users/pedro/Desktop/Projetos/TCC/img_evaporadores/evaporador{st.session_state.n_efeitos}.png')
+            image = Image.open(f'img_evaporadores/evaporador{st.session_state.n_efeitos}.png')
             st.image(image)
 
             st.divider()
@@ -1160,7 +1160,7 @@ if __name__ == "__main__":
             st.session_state.dados_fracao = pd.DataFrame([vazao_sol,st.session_state.lista_fracao],['Vazão Solução[kg/h]','Fração [adm]'],columns=col).style.format(precision=2)
             st.table(st.session_state.dados_fracao)
             
-            image = Image.open(f'C:/Users/pedro/Desktop/Projetos/TCC/img_evaporadores/evaporador{st.session_state.n_efeitos}.png')
+            image = Image.open(f'img_evaporadores/evaporador{st.session_state.n_efeitos}.png')
             st.image(image)
             if st.button('Avançar'):
                 st.session_state.etapa = 'Temperatura'
@@ -1480,7 +1480,7 @@ if __name__ == "__main__":
 
                 modo = st.pills('Escolha uma ferramenta de auxílio',['Auxilio gráfico NaOH','Auxílio gráfico H2SO4','Outro'],)
                 if modo == 'Auxilio gráfico NaOH':
-                    rotated_image = Image.open(f'C:/Users/pedro/Desktop/Projetos/TCC/img_evaporadores/Diagrama_NaOH_entalpia.png').rotate(90, expand= True)
+                    rotated_image = Image.open(f'img_evaporadores/Diagrama_NaOH_entalpia.png').rotate(90, expand= True)
                     st.image(rotated_image)
                 elif modo == 'Auxílio gráfico H2SO4':
                     st.write('4.6 - enthalpy-composition phase diagram for water+sulfuric acid mixtures at 1 atm.')
