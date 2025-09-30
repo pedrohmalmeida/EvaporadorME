@@ -606,13 +606,13 @@ def blue_line():
 if __name__ == "__main__":
 
     if st.session_state.modo == 'Apresentacao':
-        st.subheader('Apresentação')
-        st.write('O evaporador de múltiplos efeitos é um equipamento muito utilizado na indústria, principalmente no setor alimentício, permitindo concentrar uma determinada solução para seu armazenamento, transporte e/ou futuro uso. Desta forma é de grande importância que alunos de engenharia tenham contato com os conceitos e fórmulas que envolvem este equipamento industrial.')    
-        st.write('Infelizmente o tempo disponível em sala de aula é limitado e, muitas vezes, este equipamento é abordado apenas no seu formato mais simples (efeito único) deixando a versão de múltiplos efeitos como dever de casa, com casos em que nenhum acompanhamento é feito do entendimento do aluno.')    
-        st.write('Desta forma foi este programa foi construído de modo a desenvolver, de forma clara e objetiva, todos os conceitos e fórmulas que envolvem a caracterização de um evaporador de múltiplos efeitos (e efeito único), permitindo que o usuário se concentre em compreender o funcionamento de um evaporador e suas limitações sem perder seu tempo desenvolvendo múltiplas matrizes e recalculando dados básicos.')
+        st.subheader('S.Pr.E.M.E.: Solucionador de Projetos de Evaporador de Múltiplos Efeitos')
+        st.write('O evaporador de múltiplos efeitos é um equipamento crucial na indústria, notadamente no setor alimentício, onde é empregado para concentrar soluções, otimizando seu armazenamento, transporte e processamento futuro. Por sua relevância industrial, o domínio dos conceitos e fórmulas que envolvem este equipamento é fundamental para a formação de engenheiros.')    
+        st.write('Infelizmente, a limitação do tempo em sala de aula resulta, muitas vezes, em uma abordagem simplificada, restringindo o estudo ao modelo de efeito único. A versão de múltiplos efeitos, mais complexa e eficiente, acaba sendo relegada a tarefas extraclasse, sem o acompanhamento necessário para garantir a plena compreensão do aluno.')    
+        st.write('Para suprir esta lacuna, este programa foi desenvolvido com o objetivo de apresentar, de forma clara e objetiva, todos os conceitos e equações para a caracterização dos evaporadores de múltiplos efeitos (e efeito único). Com esta ferramenta, o usuário pode se concentrar na compreensão do funcionamento do equipamento e suas limitações, sem o dispêndio de tempo na construção de múltiplas matrizes e no recálculo de dados básicos.')
         
         st.divider()
-        st.write('Este programa foi desenvolvido por Pedro Almeida através do seu TCC disponibilizado aqui(link), com a orientação da professora Lívia(link) ...')
+        st.write('Este programa foi desenvolvido por Pedro Almeida através do seu TCC disponibilizado aqui(link), com a orientação da professora Lívia Chaguri(link) e apoio do professor Luiz Eleno (link)...')
         blue_line()
 
         col1, col2, col3 = st.columns(3)
