@@ -615,19 +615,13 @@ if __name__ == "__main__":
         st.write('Este programa foi desenvolvido por Pedro Almeida através do seu TCC disponibilizado aqui(link), com a orientação da professora Lívia Chaguri(link) e apoio do professor Luiz Eleno (link)...')
         blue_line()
 
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
 
         with col1:
             if st.button('Instrução'):
                 st.session_state.modo = 'Instrucao'
                 st.rerun()
             st.write('Selecione o botão acima para ver as instruções deste programa')
-
-        with col3:
-            if st.button('Versão Educacional'):
-                st.session_state.modo = 'Educacional'
-                st.rerun()
-            st.write('Selecione o botão acima para iniciar a versão educacional')
 
         with col2:
             if st.button('Cálculo'):
@@ -637,150 +631,6 @@ if __name__ == "__main__":
             st.write('Selecione o botão acima para avançar para o desenvolvimento de cálculos')
 
         blue_line()
-
-    if st.session_state.modo == 'Educacional':
-        st.header('Apresentando Teoria')
-        if st.session_state.etapa == '1-Introducao':
-            st.write('O programa trabalha em etapas, com cada etapa contendo um conjunto de cálculos.')
-            st.write('Os dados finais são salvos ao final de cada etapa e carregados pelo programa até a página receber um refresh')
-            st.write('Na versão educacional nenhum cálculo é feito, mas as fórmulas são apresentadas junto com a teoria e a mudança de etapa é livre pois não há sequencia de cálculo a ser seguida e um mapa é disponibilizado abaixo.')
-            st.write('A sequencia lógica na qual devemos aplicar as equações abaixo é a seguinte:')
-
-        if st.session_state.etapa == '2- Cálculo de Frações':
-            st.subheader("Teoria")
-            st.write('O primeiro passo no cálculo de equipamentos de evaporação é o descobrir as frações intermediárias, em certas situações o **EPE** é definido a partir das frações.')
-            st.write('De qualquer forma as frações serão necessárias para calcular a **variação de temperatura** ao longo dos efeitos e, consequentemente, a **temperatura** em cada efeito. Além do futuro cálculo das **entalpias**')
-            st.write('Embora uma sequência de deduções matemáticas sejam necessárias para o cálculo das frações, nós podemos reduzir a linha de raciocínio para três pontos:')
-            st.write('1° - Calcular vazão de líquido no último efeito')
-            st.write('2° - Calcular a vazão média esperada para o evaporador')
-            st.write('3° - Calcular a fração em cada efeito.')
-            st.divider()
-            st.subheader("Desenvolvimento das Fórmulas")
-            st.write('O cálculo de frações parte do balanço de massa')
-            st.latex(r'''F*xf = L*xL + V*xv''')     
-            st.write("Sabemos que o vapor não carrega nenhuma fração de soluto consigo (xv = 0):")
-            st.latex(r''' F*xf = L*xL''')     
-            st.write("Definindo o índice **n** para indicar o último efeito, dizemos: A vazão de líquido é igual a vazão de entrada multiplicada pela relação de fração de entrada pela fração de saída.")
-            st.latex(r'''1° :\boldsymbol{Ln} = F * \frac{xf}{xn}''')
-            st.write("Reorganizando a equação acima e definindo o índice **i** para indicar um efeito qualquer verificamos que ainda não temos a vazão de saída para os efeitos internos (**Li**)")
-            st.latex(r'''\boldsymbol{x_i} = xf * \frac{F}{\boldsymbol{L_i}}''')
-            st.write("Para encontrar o **Li** (vazão soluçao de saída no efeito i) de um efeito qualquer:")      
-            st.latex(r'''F = V1 + V2 + ... + Vi + Li''')     
-            st.write('Desta forma a vazão de um efeito i qualquer é a vazão de líquido que entrou menos a vazão de vapor que saiu em cada efeito até i')
-            st.write('Como partimos do pressuposto que as áreas são equivalentes para os efeitos, vamos inicialmente supor que as vazões de vapor também são')
-            st.latex(r'''\boldsymbol{Li} = F - \sum_{i=0}^{i} \boldsymbol{Vi} = F - V_{médio} * i''')
-            st.write("Já **Vmédio** (vazão média dos vapores) é obtida da seguinte equação (n = n° total de efeitos):")
-            st.latex(r'''2° :\boldsymbol{V_{médio}} = (F - Lsaida)/n''')
-            st.write(':red[**Atenção:**] Vmédio é uma aproximação para o início dos cálculos, iremos calcular o seu valor exato posteriormete')
-            st.latex(r'''3°:\boldsymbol{x_i} = xf * \frac{F}{F - V_{médio} * i}''')
-            st.divider()
-            st.write('Na seção abaixo (toggle) você poderá trabalhar com as três formulas principais indicadas acima, observe como as frações são distribuídas a medida que modificamos os dados:')
-
-            if st.toggle('Visualizando os cálculos'):
-            
-                st.write('Dados do evaporador:')
-                n = st.number_input('Número de efeitos', min_value=1)
-                F = st.number_input('Vazão de entrada [kg/h]',min_value=1000)
-                xf = st.number_input('Fração na entrada [adm]',min_value=0.1,step=0.1)
-                xn = st.number_input('Fração na saída [adm]',min_value=0.2,step=0.1)
-                xf = round(xf,2)
-                xn = round(xn,2)
-                st.write('Aplicação das fórmulas')
-                Ln = round(F*xf/xn,2)
-                st.latex(r'''1° :\boldsymbol{Ln} = F * \frac{xf}{xn}''')
-                st.latex(fr'''1° :{Ln} = {F} * \frac{{{xf}}}{{{xn}}}''')
-                V_m = round((F - Ln)/n,2)
-                st.latex(r'''2° :\boldsymbol{V_{médio}} = (F - Lsaida)/n''')
-                st.latex(fr'''2° :{V_m} = ({F} - {Ln})/{n}''')
-                st.latex(r'''3°:\boldsymbol{x_i} = xf * \frac{F}{F - V_{médio} * i}''')
-                for i in range(n+1):
-                    xi = round(xf * F/(F-V_m*i),2)
-                    st.write(f'Efeito {i}:')
-                    st.latex(fr'''3°:{round(xi,2)} = {xf} * \frac{{{F}}}{{{F} - {V_m} * {i}}}''')
-
-        if st.session_state.etapa == '3- Cálculo de Temperatura':
-            st.subheader("Teoria")
-            st.write('O objetivo final desta etapa é identificar as **temperaturas** em cada efeito para prosseguir para o cálculo de **entalpia**.')
-            st.write('Esta etapa pode seguir dois caminhos distintos, à depender da necessidade de incluir a elevação do ponto de ebulição [**EPE**].\nComo a metodologia de cálculo pelo EPE é compatível com a metodologia sem EPE, basta zerar os valores de EPE, este programa irá ensinar os cálculos com EPE.')
-            st.write("O Cálculo se inicia com a obtenção da temperatura dos vapores conhecidos, **pressão do vapor de aquecimento** e **pressão no último efeito**, através da **tabela** de entalpia da água saturada.")
-            st.write("Iniciamos calculando a **variação total** da temperatura a partir das temperaturas dos vapores (primeiro e último efeito) e elevação do ponto de ebulição (Dado pelo exemplo ou já calculado).")      
-            st.write("Seguimos calculando a **variação de temperatura individual** para cada efeito com os valores de elevação do ponto de ebulição e coeficientes de elevação de temperatura.")      
-            st.write("Por fim obtemos a **temperatura individual** em cada efeito ao somar a temperatura do vapor com a elevação no efeito correspondente.")      
-
-            st.divider()
-            st.subheader("Desenvolvimento das Fórmulas")
-            st.write("As fórmulas desta etapa são simples, mas a necessidade de repeti-las pode levar a erro quando realizadas manualmente.")
-            st.write("Equação evaporador completo:")
-            st.latex(r'''T_s = T_{saida} + EPE_{soma} + \boldsymbol{\Delta T_{total}}''')
-            st.write("Nós conhecemos a temperatura do vapor inicial (Ts), das elevações do ponto de ebulição (EPEsoma) e temperatura do vapor que sai do último efeito (Tsaida ou Tn):")
-            st.latex(r'''\boldsymbol{\Delta T_{total}} = T_s - (T_{saida} + EPE_{soma})''')              
-            st.write('Como queremos áreas iguais, iremos assumir que as trocas de calor também são iguais:')
-            st.warning('Verificar esta parte')
-            st.latex(r'''U_1* \Delta T_1 = U_2* \Delta T_2 = U_n* \Delta T_n''')              
-            st.latex(r''' \Delta T_{total}  = \Delta T_1 + \Delta T_2 + … \Delta T_n''')              
-            st.write("Obtemos a seguimos formula de fácil iteração (repetição):")
-            st.latex(r'''\boldsymbol{\Delta T_n} = {\Delta T_{total}}/({u_i}*(\sum_{i=1}^{n} \frac{1}{u_i})))''')
-            st.write("A obtenção da Temperatura nos efeitos é mais simples:")
-            st.latex(r'''Primeiro Efeito: T_1 = T_s - \Delta T1''')              
-            st.latex(r'''Seguintes Efeitos: T_n = (T_{n-1} - epe_{n-1}) - \Delta Tn''')              
-
-            st.divider()
-            st.write('Na seção abaixo (toggle) você poderá trabalhar com as três formulas principais indicadas acima, observe como as frações são distribuídas a medida que modificamos os dados:')
-
-            if st.toggle('Visualizando os cálculos'):
-                        
-                st.write('Dados do evaporador:')
-                lista_EPE = [5,9,39]
-                st.write(lista_EPE)
-                Ts = st.number_input('Temperatura vapor de aquecimento [°C]',min_value=100)
-                Tsaida = st.number_input('Temperatura nno último efeito [°C]',min_value=90)
-                st.write('Aplicação das fórmulas')
-
-                st.write('O $\Delta$T total é cálculado através da seguinte equação:')
-                delta_T_total = Ts-(Tsaida + sum(lista_EPE))
-                st.latex(r'''\Delta T_{total} = T_{vapor aq.} - (T_{saída} + \sum_{n=1}^{n=n° efeitos}EPE)''')
-                st.latex(fr'''\Delta T_{{total}} = {Ts} - ({Tsaida} + {sum(lista_EPE)})''')
-                st.latex(fr'''\Delta T_{{total}} = {Ts} - ({Tsaida} + {sum(lista_EPE)}) = {round(delta_T_total,2)}°C''')
-                st.divider()
-                st.write('Os $\Delta$T individuais são cálculados em sequência pela fórmula:') 
-                st.latex(r'''\boldsymbol{\Delta T_i} = {\Delta T_{total}}/({U_i}*(\sum_{i=1}^{n} \frac{1}{u_i})))''')
-                st.write('Onde U é o coeficiente de troca de calor informado no efeito') 
-                i = 0
-                for n in range(st.session_state.n_efeitos):
-                    st.latex(fr'''\Delta T_{n+1} = {round(st.session_state.delta_T_total,2)}/({st.session_state.lista_coef_TC[n]}*{sum(st.session_state.lista_coef_TC)})) = {round(st.session_state.lista_delta_T[n],2)} °C''')
-
-                delta_Ti = st.session_state.delta_T_total/(st.session_state.lista_coef_TC[i]*(sum(1/u for u in st.session_state.lista_coef_TC)))
-                st.divider()  
-                st.write('O cálculo da temperatura em cada efeito se dá pela seguinte fórmula:')
-                st.latex(r'''1° Efeito: T_1 = T_(vapor aq.) - \Delta T_1 ''')
-                st.latex(fr'''T_1 = {st.session_state.Ts} - {st.session_state.lista_delta_T[0]} = {st.session_state.lista_T[0]} °C''')
-                st.latex(r'''Demais Efeitos: T_i = (T_(i-1) - EPE_(i-1))- \Delta T_(i)''')
-                for n in range(st.session_state.n_efeitos-1):
-                    st.latex(fr'''T_{n+2} = ({st.session_state.lista_T[n]} - {st.session_state.lista_EPE[n]}) - {st.session_state.lista_delta_T[n]} = {st.session_state.lista_T[n+1]} °C''')
-
-        if st.session_state.etapa == '4- Identificação do Evaporador':
-            st.subheader("Teoria")
-            st.write('Um evaporador pode ser construído de diferentes formas, cada qual garantindo uma característica.')
-            st.write('[Explicação Breve dos diferentes tipos de evaporador]')
-
-        if st.session_state.etapa == '5- Coleta de dados':
-            st.subheader("Teoria")
-            st.write('**Coeficiente de troca térmica (U)**')
-            st.write('O Coeficiente de troca térmica é determinado pela configuração do evaporador e é expresso no sistema Si como W/m^2K, porém também podemos encontrar com o sistema inglês btu/hft^2 °F. Como terceira opção pode-se trabalhar em kcal/hm^2°C, já que na indústria alimentícia o kcal é mais comum.')
-            st.write('Conversão de Unidade')
-            data_conv_unid = {'Conversão 1':['1 kcal/h*m^2*°F','0,02048 btu/h*ft^2*°F'],'Conversão 2 ':[],}
-            st.table(data_conv_unid)
-            data_coef_evap = {'Tipo de Evaporador':['Tubo vertical curto, circulação natural','Tubo horizontal, circulação natural', 'Tubo vertical longo, circulação natural','Tubo vertical longo, circulação forçada','Filme agitado'], 'U (W/m^2*k)': ['1100-2800','1100-2800','1100-4000','2300-11000','680-2300'], 'U (btu/h*ft^3*°F)':['200-500','200-500','200-700','400-2000','120-400']}
-            st.table(data_coef_evap)
-            st.write('Tabela de **U**')
-
-        blue_line()
-        etapas = ['1- Introducao','2- Identificação do Evaporador','3- Coleta de dados','4- Cálculo de Frações','5- Cálculo de Temperatura']
-        st.session_state.etapa = st.selectbox('Selecione a etapa do cálculo e use o botão abaixo',etapas)
-        st.button(f'Avançar para etapa: {st.session_state.etapa}')
-        image_path = f'img_diagrama/Mapa_app(0).png'
-        image = Image.open(image_path)
-        st.image(image, use_container_width =True)
 
     if st.session_state.modo == 'Tutorial':
         st.header('Tutorial')
