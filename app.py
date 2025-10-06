@@ -880,8 +880,10 @@ if __name__ == "__main__":
 
 
                 st.subheader('Resumo dos Dados Iniciais')
-                st.warning('Os dados foram convertidos para as unidades abaixo.')
-                st.write(f'Os dados coletados serão apresentados novamente no final do programa através da tabela abaixo, onde [?] indica dados a serem obtidos e [-] indicados dados que não serão calculados, assim como o valor de :green[economia] e alguns dados calculados durante o processo.')
+                #st.warning('Os dados foram convertidos para as unidades abaixo.')
+                st.write(f'A tabela abaixo reúne os :green[valores conhecidos] e os :red[valores à calcular], onde:')
+                st.write(f'- (?) indica os valores que serão calculados nas próximas etapa. ')
+                st.write(f'- (-) indica os valores que não serão cálculados ')
                 
                 vazao_sol = [st.session_state.vazao_F]
                 fracao = [st.session_state.xf]
@@ -940,9 +942,8 @@ if __name__ == "__main__":
 
         #Cálculo das frações
         if st.session_state.etapa == 'Fracao':
-            st.subheader('Cálculo das frações')
+            st.subheader('Cálculo das frações mássicas')
 
-            st.write(f'Dado que estamos trabalhando com um evaporador de :green[{st.session_state.n_efeitos}] efeitos com vazão de entrada de :green[{st.session_state.vazao_F}] [kg/h], fração de entrada :green[{st.session_state.xf}] e fração de saída :green[{st.session_state.xn}]')
             #Tabela Inicial
             col = []
             vazao_sol = []
@@ -1020,7 +1021,7 @@ if __name__ == "__main__":
                 st.rerun()
 
         if st.session_state.etapa == 'Temperatura':
-            st.header('Cálculo das Temperaturas')
+            st.header('Cálculo das Temperatura')
             if st.session_state.lista_novo_delta_T:
                 st.write('Dado que ja temos uma lista de variação existente, vamos pular a primeira etapa de contas.')
 
@@ -1061,22 +1062,19 @@ if __name__ == "__main__":
 
 
                 st.subheader('Cálculo Temperatura no primeiro e último efeito')
-                st.write('Utilizando a tabela de propriedades da água podemos encontrar a temperatura no vapor de aquecimento inicial e do vapor de saída no último efeito.')
+                st.write('A temperatura do vapor de aquecimento inicial e do vapor de saída no último efeito podem ser encontradas na a tabela de propriedades da água.')
                 #1° Efeito
                 #st.write(f'Obtendo temperatura do vapor de aquecimento inicial a partir da tabela de propriedades termodinâmicas da água.')
                 #st.session_state.Ts = calc.Tabela_Vapor_Sat_app(st.session_state.P_vapor_aquecimento_MPa,'P (MPa)','T (°C)')
                 st.session_state.Ts = Tabela_Vapor_Sat_app(st.session_state.P_vapor_aquecimento_MPa,'P (MPa)','T (°C)')
                 #N° Efeito
                 #st.write(f'Obtendo temperatura no último efeito a partir da tabela de propriedades termodinâmicas da água.')
-                if st.checkbox('Visualização (Parcial) da Tabela de propriedades termodinâmicas'):
-                    df = pd.read_csv(r'C:\Users\pedro\Desktop\Projetos\TCC\Tabela_agua_saturacao.txt')
-                    st.table(df.head())
-                
+                                
                 if st.session_state.P_saida_MPa != 0:
                     #st.session_state.Tsaida = calc.Tabela_Vapor_Sat_app(st.session_state.P_saida_MPa,'P (MPa)','T (°C)')
                     st.session_state.Tsaida = Tabela_Vapor_Sat_app(st.session_state.P_saida_MPa,'P (MPa)','T (°C)')
-                    st.write(f'Para Pressão (Entrada) de **{st.session_state.P_vapor_aquecimento_kgf:.2f} kgf/cm^2** ou {st.session_state.P_vapor_aquecimento_MPa:.4f} Mpa temos uma temperatura de **{st.session_state.Ts:.1f} °C**')
-                    st.write(f'Para Pressão (Saída) de **{st.session_state.P_saida_kgf:.2f} kgf/cm^2** ou {st.session_state.P_saida_MPa:.4f} Mpa temos uma temperatura de **{st.session_state.Tsaida:.1f} °C**')
+                    st.write(f'Pressão de entrada: **{st.session_state.P_vapor_aquecimento_kgf:.2f} kgf/cm^2** ({st.session_state.P_vapor_aquecimento_MPa:.4f} Mpa) -> **{st.session_state.Ts:.1f} °C**')
+                    st.write(f'Pressão de saída: **{st.session_state.P_saida_kgf:.2f} kgf/cm^2** ({st.session_state.P_saida_MPa:.4f} Mpa) -> **{st.session_state.Tsaida:.1f} °C**')
                 else:
                     st.error('Pressão de saída não informada, Temperatura de saída indisponível')
                     st.write('Informe a temperatura em cada efeito:')
@@ -1098,7 +1096,6 @@ if __name__ == "__main__":
                 st.divider()
                 st.subheader('Cálculo Variação de Temperatura Total')
                 st.session_state.delta_T_total = st.session_state.Ts - (st.session_state.Tsaida + sum(st.session_state.lista_EPE))
-                st.write('A variação total de temperatura através de todos os efeitos é dado pela temperatura do vapor de aquecimento - **Ts**, a temperatura do vapor de saída - **Tsaida** e as elevações dos ponto de ebulição - **EPE**')
                 st.latex(r'''\Delta T_{total} = T_s - (T_{saída}+ {\sum(EPEs)})''')
                 if st.toggle('Cálculo aplicado'):
                     st.latex(fr'''\Delta T_{{total}} = {st.session_state.Ts:.2f} - ({st.session_state.Tsaida:.2f}+ {sum(st.session_state.lista_EPE)})''')
@@ -1123,7 +1120,6 @@ if __name__ == "__main__":
 
             st.divider()
             st.subheader('Cálculo Temperatura nos efeitos')
-            st.write('A temperatura individual é dado pela **temperatura no primeiro efeito** somando aos **EPEs** e **variações de temperatura** nos efeitos subsequentes.')
             st.session_state.lista_T = []
             i = 0
             while i < int(st.session_state.n_efeitos):
@@ -1137,9 +1133,9 @@ if __name__ == "__main__":
                     #st.write(f'Temperatura no efeito {i+1}: {Tn:.1f} °C')    
                 i += 1
 
-            st.write('Para o 1° Efeito:')
+            st.write('A temperatura no primeiro efeito é calculada por:')
             st.latex(r''' T_1 = T_s - \Delta T_1''')
-            st.write('Para demais efeitos:')
+            st.write('As demais temperaturas são calculadas por:')
             st.latex(r''' T_i = T_{i-1} - EPE_{i-1} - \Delta T_i''')
             if st.toggle('Equação aplicada2'):
                 i = 0
@@ -1184,7 +1180,16 @@ if __name__ == "__main__":
             st.table(st.session_state.dados_temp)
 
             
-            st.write('Com os valores de temperatura em cada efeito calculados, podemos calcular as entapias dos diferentes fluídos.')
+            st.write('Para o futuro cálculo das entalpias necessitamos encontrar a temperatura de saturação através da seguinte fórmula:')
+            st.latex(r'''Tsat = T - EPE''')
+            temperatura_sat = []
+            for n in range(int(st.session_state.n_efeitos)):
+                t_sat = temperatura[n]-st.session_state.lista_EPE[n]
+                temperatura_sat.append(t_sat)
+            st.session_state.dados_temp2 = pd.DataFrame([temperatura,epe,temperatura_sat],['Temperatura [°C]','EPE [°C]','Temperatura Saturação[°C]'],columns=col).style.format(precision=2) 
+            st.table(st.session_state.dados_temp2)
+
+
             if st.button('Avançar'):
                 st.session_state.etapa = 'Entalpia agua'
                 st.session_state.recalcular_temp = False
@@ -1195,49 +1200,25 @@ if __name__ == "__main__":
                 st.rerun()
 
         if st.session_state.etapa == 'Entalpia agua':
-            st.subheader('Cálculo das entalpias de água')
-
-            st.write('As entalpias da água (líquido e vapor) podem ser obtidas por equações, mas podemos utilizar a tabela de propriedades (visualização abaixo) para obter dados mais precisos (kcal = 0.239 kJ).')
-            st.write('Utilizando os dados de temperatura obtidos na página anterior, e a fórmula abaixo, podemos completar a tabela a seguir.')       
-            st.latex(r'''Tsat = T - EPE''')
-            
-            col = ['Alimentação']
-            H = ['?']
-            hl = ['Não calc']
-            hv = ['Não calc']
-            Tempsat = ['-']
-            Temp = ['-']
-            for n in range(int(st.session_state.n_efeitos)):
-                col.append(f'{n+1}° efeito')
-                hv .append('?')
-                hl.append('?')
-                H.append('?')
-                Temp.append(st.session_state.lista_T[n])
-                Tempsat.append(st.session_state.lista_T[n] - st.session_state.lista_EPE[n])
-
-            df = pd.DataFrame([Temp,hv,Tempsat,hl, H], index=['Temperatura [°C]', 'Entalpia Vapor [kcal/kg]','Temperatura Sat [°C]', 'Entalpia Líquido [kcal/kg]','Entalpia Vaporização [kcal/kg]'], columns=col)
-
-            st.dataframe(df.style.format(precision=2))
-
-            if st.checkbox('Visualização (Parcial) da Tabela de propriedades termodinâmicas'):
-                df = pd.read_csv(r'C:\Users\pedro\Desktop\Projetos\TCC\Tabela_agua_saturacao.txt')
-                st.table(df.head())
-
-            
+            st.subheader('Cálculo das entalpias: vapor de aquecimento e saída dos efeitos')
+            st.write('As entalpias para água saturada são obtidas diretamente através da tabela de propriedades da água saturada.')
+            st.link_button(
+                label="Acesse a Tabela de Vapor (Universidade Federal de Pelotas)",
+                url="https://wp.ufpel.edu.br/ciceroescobar/files/2022/04/Tabelas-e-diagramas-de-propriedades-Cengel-Mec-Flu.pdf"
+            )            
             st.divider()
             st.subheader('Entalpia vaporização do vapor inicial')
             #st.session_state.hs = calc.Tabela_Vapor_Sat_app(st.session_state.P_vapor_aquecimento_MPa,'P (MPa)','Enthalpy of Vaporization (kJ/kg)') * 0.239006
             st.session_state.hs = Tabela_Vapor_Sat_app(st.session_state.P_vapor_aquecimento_MPa,'P (MPa)','Enthalpy of Vaporization (kJ/kg)') * 0.239006
-            st.write(f"A entalpia de vaporização do vapor de aquecimento inicial(P = {st.session_state.P_vapor_aquecimento_kgf} kgf/cm^2): {st.session_state.hs:.2f} kcal/kg")
+            st.write(f"Para o vapor de aquecimento inicial (P = {st.session_state.P_vapor_aquecimento_kgf} kgf/cm^2) -> {st.session_state.hs:.2f} kcal/kg")
+            st.divider()          
             
             st.session_state.lista_entalpia_vapor = []
             st.session_state.lista_entalpia_liquido = []
-            st.divider()
 
             st.subheader('Entalpias nos efeitos')
             i = 0
             while i < int(st.session_state.n_efeitos):  
-                st.write(f'Buscando Entalpias para água saturada para efeito {i+1}')
                 #Vapor saturado
                 #Entrada: Tn
                 #Saída:  hVn (vapor saturado)
@@ -1257,17 +1238,14 @@ if __name__ == "__main__":
                 hl = h / 4.184
                 st.session_state.lista_entalpia_liquido.append(hl)
                 #st.write(f'Entalpia Liquido (Tsat = {round(Tsat,2)}°C): {hl:.2f} kcal/kg')
-                
                 i += 1
-
-            st.divider()
-            st.subheader('Resumo dos dados')        
-            col = ['Alimentação']
-            H = [st.session_state.hs]
-            hl = ['Não calc']
-            hv = ['Não calc']
-            Tsat = ['-']
-            T = ['-']
+      
+            col = []
+            H = []
+            hl = []
+            hv = []
+            Tsat = []
+            T = []
             for n in range(int(st.session_state.n_efeitos)):
                 col.append(f'{n+1}° efeito')
                 hv .append(st.session_state.lista_entalpia_vapor[n])
@@ -1276,9 +1254,18 @@ if __name__ == "__main__":
                 T.append(st.session_state.lista_T[n])
                 Tsat.append(st.session_state.lista_T[n] - st.session_state.lista_EPE[n])
 
-            df = pd.DataFrame([Tsat,hl,T,hv, H], index=['Temperatura Sat [°C]', 'Entalpia Líquido [kcal/kg]','Temperatura [°C]', 'Entalpia Vapor [kcal/kg]','Entalpia Vaporização [kcal/kg]'], columns=col)
-            st.session_state.dados_entalpia_v = df
-            st.dataframe(st.session_state.dados_entalpia_v.style.format(precision=2))
+           
+            st.write('A **entalpia do vapor saturado** lida na tabela de vapor, usando a temperatura de operação (temperatura do efeito).')
+            st.warning('Valores para vazão composta por apenas vapor saturado.')
+            df = pd.DataFrame([T,hv], index=['Temperatura [°C]', 'Entalpia Vapor [kcal/kg]'], columns=col)
+            st.dataframe(df.style.format(precision=2))
+            st.write('A **entalpia do vapor de aquecimento** na saída do evaporador.')
+            st.warning('Valores para vazão composta por apenas líquido saturado.')
+            df = pd.DataFrame([Tsat,hl,], index=['Temperatura Sat [°C]', 'Entalpia Líquido [kcal/kg]'], columns=col)
+            st.dataframe(df.style.format(precision=2))
+            st.write('A **energia** conferida para o sistema pelo trocador de calor é a diferença entre as duas temperaturas')
+            df = pd.DataFrame([hv,hl, H], index=[ 'Entalpia Vapor [kcal/kg]', 'Entalpia Líquido [kcal/kg]','Entalpia Vaporização [kcal/kg]'], columns=col)
+            st.dataframe(df.style.format(precision=2))
 
             if st.button('Avançar'):
                 st.session_state.etapa = 'Entalpia solucao'
@@ -1299,7 +1286,8 @@ if __name__ == "__main__":
                     i += 1
                     st.write(f'Entalpia da solução saindo do efeito {i}: {x} Kcal/kg')
             else:
-                st.write('A entalpia de solução pode ser obtida de diferentes formas, abaixo estão algumas opções disponibilizadas pelo programa')
+                st.write('Para a entalpia de solução podemos usar gráficos termodinâmicos ou fórmulas específicas a depender da solução estudada.')
+
                 col = ['Alimentação']
                 hs = ['?']
                 Temp = [round(st.session_state.Tf,2)]
@@ -1310,6 +1298,16 @@ if __name__ == "__main__":
 
                 df = pd.DataFrame([Temp,hs], index=['Temperatura [°C]',' Ent. Sol. [Kcal/kg]'], columns=col)
                 df
+
+                modo = st.pills('Escolha uma ferramenta de auxílio',['Auxilio gráfico NaOH','Auxílio gráfico H2SO4','Esconder'],)
+                if modo == 'Auxilio gráfico NaOH':
+                    rotated_image = Image.open(f'img_evaporadores/Diagrama_NaOH_entalpia.png').rotate(90, expand= True)
+                    st.image(rotated_image)
+                elif modo == 'Auxílio gráfico H2SO4':
+                    #st.write('4.6 - enthalpy-composition phase diagram for water+sulfuric acid mixtures at 1 atm.')                    
+                    image = Image.open(r"C:\Users\pedro\Desktop\Projetos\TCC\img_evaporadores\Diagrama_H2SO4_entalpia.jpg")
+                    st.image(image)
+                    st.link_button("Chemical Engineering Design and Analysis: An Introduction", "https://duncan.cbe.cornell.edu/Graphs/Chp4graphs/4-36.pdf")
 
                 st.divider()
                 st.subheader(f'Entalpia solução original')
@@ -1323,21 +1321,10 @@ if __name__ == "__main__":
                     st.divider()
                     st.subheader(f'Entalpia solução saindo do efeito {i+1}')
                     Entalpia_NaOH = st.number_input(f'Qual a entalpia [kcal/kg] de uma solução {round(st.session_state.lista_fracao[i+1],2)} e temperatura {round(st.session_state.lista_T[i],2)}°C ({round((st.session_state.lista_T[i]*1.8+32),0)}°F)')
-                    st.write(f'Para o efeito {i+1}, teremos entalpia de {Entalpia_NaOH} cal/kg')
+                    st.write(f'Para o {i+1}° efeito, teremos entalpia de {Entalpia_NaOH} cal/kg')
                 
                     st.session_state.lista_entalpia_solucao.append(Entalpia_NaOH) 
                     i += 1          
-
-                modo = st.pills('Escolha uma ferramenta de auxílio',['Auxilio gráfico NaOH','Auxílio gráfico H2SO4','Outro'],)
-                if modo == 'Auxilio gráfico NaOH':
-                    rotated_image = Image.open(f'img_evaporadores/Diagrama_NaOH_entalpia.png').rotate(90, expand= True)
-                    st.image(rotated_image)
-                elif modo == 'Auxílio gráfico H2SO4':
-                    st.write('4.6 - enthalpy-composition phase diagram for water+sulfuric acid mixtures at 1 atm.')
-                    st.write('rom Chemical Engineering Design and Analysis: An Introduction T. M. Duncan and J. A. Reimer, Cambridge University Press, 2nd ed., 2019')
-                    st.link_button("Origem", "https://duncan.cbe.cornell.edu/Graphs/Chp4graphs/4-36.pdf")
-                    image = Image.open(r"C:\Users\pedro\Desktop\Projetos\TCC\img_evaporadores\Diagrama_H2SO4_entalpia.jpg")
-                    st.image(image)
 
             st.divider()
             st.subheader('Resumo dos dados')      
@@ -1372,15 +1359,15 @@ if __name__ == "__main__":
 
         if st.session_state.etapa == 'Vazao':
             st.subheader('Cálculo das Vazões')
-            st.write('Dado os valores já acumulados até aqui, montamos uma matriz com as incógnitas representando a vazão do vapor de aquecimento e a vazão de vapor em cada efeito')
-
+            st.write('Para obter as vazões precisamos contruir uma matriz com base nas equações termodinâmicas que regem o EME.')
+            st.write('Na tabela abaixo está reunida todos os dados calculados até aqui e necessários para montar esta matriz:')
             H = [st.session_state.hs]
             hl = ['Não calc']
             hv = ['Não calc']
             hsol = [st.session_state.hf]
-            l_v = [[st.session_state.vazao_F,'?']]
+            l_v = ['?']
             x = st.session_state.lista_fracao
-            col= ['Alimentação  [F , S]']
+            col= ['Alimentação']
             for n in range(int(st.session_state.n_efeitos)):
                 col.append(f'{n+1}° efeito')
                 hv .append(st.session_state.lista_entalpia_vapor[n])
@@ -1389,24 +1376,27 @@ if __name__ == "__main__":
                 hsol.append(st.session_state.lista_entalpia_solucao[n])
                 l_v.append('?')
 
-            df = pd.DataFrame([l_v,x,hv,hl,H,hsol], index=['Vazão [kg/h]', 'Fração [adm]','H Vapor [kcal/kg]','H Liquido [kcal/kg]','H Vap. [kcal/kg]','h Solução [kcal/kg]'], columns=col)
+            df = pd.DataFrame([l_v,x,hv,hl,H,hsol], index=['Vazão de Vapor [kg/h]', 'Fração Mássica [adm]','Entalpia do Vapor de saída[kcal/kg]','Entalpia do Liquido [kcal/kg]','Entalpia de vaporização [kcal/kg]','Entalpia da Solução na saída[kcal/kg]'], columns=col)
             st.dataframe(df.style.format(precision=2))
             st.divider()
 
             if st.toggle('Desenvolvimento das equações de matriz'):    
-                st.write('A matriz será construída a partir do balanço de massa e energia abaixo (Ex: 2 Efeito)')
+                st.write('Exemplo de construção de matriz para evaporador de 2 Efeito)')
                 st.write('Um passo a passo mais detalhado pode ser encontrado no meu TCC')
                 st.write('**Balanço de Energia**')
                 st.latex(r'''1° Efeito: F \cdot h_F + S \cdot h_s = V_1 \cdot h_{G1} + L_1 \cdot H_{L1}''')
-                st.latex(r'''2° Efeito: F \cdot h_F + S \cdot h_s = V_1 \cdot h_{G1} + V_2 \cdot h_{G2} + L_2 \cdot H_{L2}''')
+                st.latex(r'''2° Efeito: L_1 \cdot H_{L1} + V_1 \cdot (h_{G1}-h_{L1}) = V_1 \cdot h_{G1} + V_2 \cdot h_{G2} + L_2 \cdot H_{L2}''')
+                st.latex(r'''Global: F \cdot h_F + S \cdot h_s = V_1 \cdot h_{G1} + V_2 \cdot h_{G2} + L_2 \cdot H_{L2}''')
 
                 st.write('**Balanço de massa solvente**')
                 st.latex(r'''1° Efeito: F = L_1 + V_1''')
-                st.latex(r'''2° Efeito: F = L_2 + V_2 +V_1''')
+                st.latex(r'''2° Efeito: L_1 = L_2 + V_2 ''')
+                st.latex(r'''Global: F = L_2 + V_2 +V_1''')
                 st.latex(r'''V_2 +V_1  = F - L_2 = \boldsymbol{V_{soma}}''')
                 st.write('**Balanço de massa soluto**')
                 st.latex(r'''1° Efeito: F*x_f= L_1*x_{L1} + \cancel{V_1*x_{v1}}''')
-                st.latex(r'''2° Efeito: F*x_f= L_2*x_{L2} + \cancel{V_2*x_{v2}} + \cancel{V_1*x_{v1}}''')
+                st.latex(r'''2° Efeito: L_1*x_{L1}= L_2*x_{L2} + \cancel{V_2*x_{v2}}''')
+                st.latex(r'''Global: F*x_f= L_2*x_{L2} + \cancel{V_2*x_{v2}} + \cancel{V_1*x_{v1}}''')
                 
                 st.write('**Equação desenvolvida**')
                 st.latex(r'''\boldsymbol{V_1}*(H_{L1}-h_{G1}) + \boldsymbol{S}*h_s = F*(H_{L1}-h_F)''')
@@ -1428,8 +1418,9 @@ if __name__ == "__main__":
 
             st.write(f'Aplicando os valores acima na matriz, Nós obtemos a tabela abaixo:')
             
-            l_v = [[st.session_state.vazao_F,round(st.session_state.vazao_S,2)]] + st.session_state.lista_vazao
-            df = pd.DataFrame([l_v,hv,hl,H,hsol], index=['Vazão [kg/h]','H Vapor [kcal/kg]','H Liquido [kcal/kg]','H Vap. [kcal/kg]','h Solução [kcal/kg]'], columns=col)
+            l_v = st.session_state.lista_vazao
+            col.pop(0)
+            df = pd.DataFrame([l_v], index=['Vazão de vapor de saída[kg/h]'], columns=col)
             st.dataframe(df.style.format(precision=2))
             st.divider()        
 
