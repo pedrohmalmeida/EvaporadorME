@@ -607,12 +607,11 @@ if __name__ == "__main__":
 
     if st.session_state.modo == 'Apresentacao':
         st.subheader('S.Pr.E.M.E.: Solucionador de Projetos de Evaporador de Múltiplos Efeitos')
-        st.write('O evaporador de múltiplos efeitos é um equipamento crucial na indústria, notadamente no setor alimentício, onde é empregado para concentrar soluções, otimizando seu armazenamento, transporte e processamento futuro. Por sua relevância industrial, o domínio dos conceitos e fórmulas que envolvem este equipamento é fundamental para a formação de engenheiros.')    
-        st.write('Infelizmente, devido a limitação do tempo em sala de aula e a extensão dos cálculos necessários para um projeto de evaporador de múltiplos efeitos, o contato do aluno de engenharia com o equipamento é, muitas vezes, limitado à evaporadores de efeito único. A versão de múltiplos efeitos, mais complexa e eficiente, acaba sendo relegada a tarefas extraclasse, sem o acompanhamento necessário para garantir a plena compreensão do aluno.')    
-        st.write('Para suprir esta lacuna, este programa foi desenvolvido com o objetivo de apresentar, de forma clara e objetiva, todos os conceitos e equações para a caracterização dos evaporadores de múltiplos efeitos. Com esta ferramenta, o futuro engenheiro pode se concentrar na compreensão do funcionamento do equipamento e suas limitações.')
-        
+        st.image(Image.open(f'img_evaporadores\Img_evaporador_me.png'))
+        st.write('O evaporador de múltiplos efeitos é crucial na indústria, especialmente na concentração de soluções no setor alimentício. Devido à sua complexidade e aos extensos cálculos, a versão de múltiplos efeitos é frequentemente subestimada no ensino de engenharia, que se foca mais nos evaporadores de efeito único.')    
+        st.write('Este programa foi desenvolvido para suprir essa lacuna, apresentando de forma clara e objetiva todos os conceitos e equações. Com esta ferramenta, o futuro engenheiro pode se concentrar na compreensão do funcionamento, otimização e limitações do equipamento.')    
         st.divider()
-        st.write('Este programa foi desenvolvido por Pedro Almeida através do seu TCC disponibilizado aqui(link), com a orientação da professora Lívia Chaguri(link) e apoio do professor Luiz Eleno (link)...')
+        st.write('_Desenvolvido por Pedro Almeida (TCC: [link]), com a orientação de Lívia Chaguri ([link]) e apoio de Luiz Eleno ([link])._')
         blue_line()
 
         col1, col2 = st.columns(2)
