@@ -607,7 +607,7 @@ if __name__ == "__main__":
 
     if st.session_state.modo == 'Apresentacao':
         st.subheader('S.Pr.E.M.E.: Solucionador de Projetos de Evaporador de Múltiplos Efeitos')
-        st.image(Image.open(f'img_evaporadores\Img_evaporador_me.png'))
+        st.image(Image.open(f'img_evaporadores/Img_evaporador_me.png'))
         st.write('O evaporador de múltiplos efeitos é crucial na indústria, especialmente na concentração de soluções no setor alimentício. Devido à sua complexidade e aos extensos cálculos, a versão de múltiplos efeitos é frequentemente subestimada no ensino de engenharia, que se foca mais nos evaporadores de efeito único.')    
         st.write('Este programa foi desenvolvido para suprir essa lacuna, apresentando de forma clara e objetiva todos os conceitos e equações. Com esta ferramenta, o futuro engenheiro pode se concentrar na compreensão do funcionamento, otimização e limitações do equipamento.')    
         st.divider()
