@@ -1215,7 +1215,6 @@ if __name__ == "__main__":
             st.session_state.lista_entalpia_vapor = []
             st.session_state.lista_entalpia_liquido = []
 
-            st.subheader('Entalpias nos efeitos')
             i = 0
             while i < int(st.session_state.n_efeitos):  
                 #Vapor saturado
@@ -1238,7 +1237,9 @@ if __name__ == "__main__":
                 st.session_state.lista_entalpia_liquido.append(hl)
                 #st.write(f'Entalpia Liquido (Tsat = {round(Tsat,2)}°C): {hl:.2f} kcal/kg')
                 i += 1
-      
+
+
+            st.subheader('Entalpias nos efeitos')
             col = []
             H = []
             hl = []
@@ -1258,13 +1259,16 @@ if __name__ == "__main__":
             st.warning('Valores para vazão composta por apenas vapor saturado.')
             df = pd.DataFrame([T,hv], index=['Temperatura [°C]', 'Entalpia Vapor [kcal/kg]'], columns=col)
             st.dataframe(df.style.format(precision=2))
+            st.divider()
             st.write('A **entalpia do vapor de aquecimento** na saída do evaporador.')
             st.warning('Valores para vazão composta por apenas líquido saturado.')
             df = pd.DataFrame([Tsat,hl,], index=['Temperatura Sat [°C]', 'Entalpia Líquido [kcal/kg]'], columns=col)
             st.dataframe(df.style.format(precision=2))
+            st.divider()
             st.write('A **energia** conferida para o sistema pelo trocador de calor é a diferença entre as duas temperaturas')
             df = pd.DataFrame([hv,hl, H], index=[ 'Entalpia Vapor [kcal/kg]', 'Entalpia Líquido [kcal/kg]','Entalpia Vaporização [kcal/kg]'], columns=col)
             st.dataframe(df.style.format(precision=2))
+            st.divider()
 
             if st.button('Avançar'):
                 st.session_state.etapa = 'Entalpia solucao'
