@@ -1270,6 +1270,9 @@ if __name__ == "__main__":
             st.dataframe(df.style.format(precision=2))
             st.divider()
 
+            #Tabelas para apresentação no final do programa
+            st.session_state.dados_entalpia_v=df
+            
             if st.button('Avançar'):
                 st.session_state.etapa = 'Entalpia solucao'
                 st.rerun()
@@ -1534,7 +1537,8 @@ if __name__ == "__main__":
             st.write(f'Podemos realizar a modelagem de um reator de {st.session_state.n_efeitos} efeitos obtendo os seguintes dados:')
             st.table(st.session_state.df_dados_iniciais_completos)
             st.write('Este programa forneceu os dados tabelados de entalpia no seguinte formato:')
-            df = pd.concat([st.session_state.dados_entalpia_v, st.session_state.dados_entalpia_sol])
+            st.dataframe(st.session_state.dados_entalpia_v.style.format(precision=2))
+            st.dataframe(st.session_state.dados_entalpia_sol.style.format(precision=2))
             st.dataframe(df.style.format(precision=2))
             if st.button('Retornar.'):
                 st.session_state.etapa = 'Vazao'
