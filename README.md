@@ -15,9 +15,9 @@ Pandas: Manipulação de dados e propriedades de saturação.
 Streamlit: Criação da interface web e visualização de dados.
 Pillow: Processamento de imagens.
 
-📈 Referência
+📈 Referências
 Esta ferramenta origina do Trabalho de Conclusão de Curso: 
-ALMEIDA, Pedro Henrique Martins de; CHAGURI, Lívia. S.Pr.E.M.E.: Solucionador de Projetos de Evaporadores de Múltiplos Efeitos.
+ALMEIDA, Pedro Henrique Martins de; CARVALHO, Lívia Chaguri e. S.Pr.E.M.E.: Uma ferramenta didática em Python para Solução de Projetos de Evaporadores de Múltiplos Efeitos. 2026. 50 f. Trabalho de Conclusão de Curso (Graduação em Engenharia Bioquímica) – Escola de Engenharia de Lorena, Universidade de São Paulo, Lorena, 2026
 
 O Manual do Usuário e o Guia Técnico estão em fase de finalização e serão anexados em breve.
 
