@@ -19,6 +19,8 @@ Pillow: Processamento de imagens.
 Esta ferramenta origina do Trabalho de Conclusão de Curso: 
 ALMEIDA, Pedro Henrique Martins de; CHAGURI, Lívia. S.Pr.E.M.E.: Solucionador de Projetos de Evaporadores de Múltiplos Efeitos.
 
+O Manual do Usuário e o Guia Técnico estão em fase de finalização e serão anexados em breve.
+
 💻 Como Executar Localmente
 Clone o repositório: git clone https://github.com/pedrohlmalmeida/EvaporadorME.git
 Instale as dependências: pip install -r requirements.txt
