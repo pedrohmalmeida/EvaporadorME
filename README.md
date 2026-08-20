@@ -19,7 +19,7 @@ Uma ferramenta computacional didática desenvolvida em **Python** para auxiliar 
 ## 📈 Referência Acadêmica
 Esta ferramenta é o produto do Trabalho de Conclusão de Curso:
 
-> ALMEIDA, Pedro Henrique Martins de; CARVALHO, Lívia Chaguri e. **S.Pr.E.M.E.: Uma ferramenta didática em Python para Solução de Projetos de Evaporadores de Múltiplos Efeitos**. 2026. 50 f. Trabalho de Conclusão de Curso (Graduação em Engenharia Bioquímica) – Escola de Engenharia de Lorena, Universidade de São Paulo, Lorena, 2026.
+> ALMEIDA, Pedro Henrique Martins de; CARVALHO, Lívia Chaguri e. **S.Pr.E.M.E.: Uma ferramenta didática em Python para Solução de Projetos de Evaporadores de Múltiplos Efeitos**. 2026. 56 p. Trabalho de Conclusão de Curso (Graduação em Engenharia Bioquímica) – Escola de Engenharia de Lorena, Universidade de São Paulo, Lorena, 2026.
 
 ## 📚 Documentação
 O **Manual do Usuário** e o **Guia Técnico** estão em fase de finalização e serão disponibilizados em breve na pasta `/docs`.
